@@ -1,7 +1,6 @@
 {
   "build": {
-    "builder": "node",
-    "buildCommand": "corepack enable && pnpm install"
+    "command": "corepack enable && pnpm install"
   },
   "start": {
     "command": "pnpm start"
