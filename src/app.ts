@@ -9,10 +9,10 @@ import { productSchemas } from "./modules/product/product.schema";
 import { withRefResolver } from "fastify-zod";
 import fastifyCors from "@fastify/cors";
 
-
+const secret = process.env.SECRET ? process.env.SECRET : ""
 export const server = Fastify({logger: true});
 server.register(fjwt, {
-    secret: "distaste_cyberwantsathhinkpadp14switnvidiat500"
+    secret: secret
 })
 
 const envVar = process.env.PORT;
@@ -34,33 +34,19 @@ declare module "@fastify/jwt" {
         }
     }
 }
-server.register(fastifySwagger, withRefResolver({
-  openapi: {
-    info: {
-      title: 'fastify-api',
-      version: '1.0.0',
-    },
-  },
-}));
+
 
 server.register(fastifyCors, {
   origin: [
     "http://localhost:8081",
     "http://localhost:19006", // Expo web (optional)
+    "https://*.up.railway.app",
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   credentials: true,
 });
 
-server.register(fastifySwaggerUi, {
-  routePrefix: '/docs',
-  uiConfig: {
-    docExpansion: 'list',
-    deepLinking: false,
-  },
-  staticCSP: true,
-  transformStaticCSP: (header) => header,
-});
+
 
 
 server.decorate("authenticate", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -80,8 +66,27 @@ async function main() {
         server.addSchema(schema)
     }
 
-    server.register(userRoutes, { prefix: "api/users"});
-    server.register(productRoutes, { prefix: "api/products"})
+    server.register(fastifySwagger, withRefResolver({
+    openapi: {
+        info: {
+        title: 'fastify-api',
+        version: '1.0.0',
+        },
+    },
+    }));
+
+    server.register(fastifySwaggerUi, {
+        routePrefix: '/docs',
+        uiConfig: {
+            docExpansion: 'list',
+            deepLinking: false,
+        },
+        staticCSP: true,
+        transformStaticCSP: (header) => header,
+        });
+
+    server.register(userRoutes, { prefix: "/api/users"});
+    server.register(productRoutes, { prefix: "/api/products"})
 
     try{
         await server.listen({
