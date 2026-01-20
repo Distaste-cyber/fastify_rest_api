@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "start": "tsx src/app.ts"
+    "start": "prisma generate && tsx src/app.ts"
   },
   "packageManager": "pnpm@10.14.0",
   "dependencies": {
