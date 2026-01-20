@@ -9,10 +9,10 @@ import { productSchemas } from "./modules/product/product.schema";
 import { withRefResolver } from "fastify-zod";
 import fastifyCors from "@fastify/cors";
 
-const secret = process.env.SECRET ? process.env.SECRET : ""
+
 export const server = Fastify({logger: true});
 server.register(fjwt, {
-    secret: secret
+    secret: process.env.JWT_SECRET || ""
 })
 
 const envVar = process.env.PORT;
