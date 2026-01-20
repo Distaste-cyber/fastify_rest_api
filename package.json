@@ -5,6 +5,7 @@
   "scripts": {
     "start": "tsx src/app.ts"
   },
+  "packageManager": "pnpm@10.14.0",
   "dependencies": {
     "@fastify/cors": "^11.2.0",
     "@fastify/jwt": "5.0.0",
