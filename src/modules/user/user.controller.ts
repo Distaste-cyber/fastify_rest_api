@@ -49,7 +49,7 @@ export async function loginHandler(request : FastifyRequest<{
     if(correctPassword){
         const {password, salt,  ...rest} = user
 
-        return { accessToken : server.jwt.sign(rest)}
+        return reply.send({ accessToken : server.jwt.sign(rest)})
     }
 
     return reply.code(401).send({
